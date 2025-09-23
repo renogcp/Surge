@@ -5,7 +5,7 @@
 
 // --- 配置区域 ---
 // 您可以修改下面的域名，让脚本在其他网站上也能生效
-const targetDomain = 'cockpit.btp.cloud.sap';
+const targetDomain = 'amer.cockpit.btp.cloud.sap';
 // --- 配置区域结束 ---
 
 // 获取当前请求的 URL
