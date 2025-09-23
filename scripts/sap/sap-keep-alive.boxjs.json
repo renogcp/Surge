@@ -1,0 +1,24 @@
+{
+  "id": "app.sap.keepalive",
+  "name": "SAP 应用保活设置",
+  "author": "Gemini",
+  "version": "1.0.0",
+  "description": "用于设置 SAP Cloud Foundry 应用保活脚本需要访问的 URL 列表。",
+  "apps": [
+    {
+      "id": "sap_urls",
+      "name": "应用地址列表",
+      "desc": "请填写您需要保活的应用 URL，每行一个。例如：https://app-1.cfapps.ap21.hana.ondemand.com",
+      "keys": ["sap_urls_key"],
+      "settings": [
+        {
+          "id": "sap_urls_key",
+          "name": "URL 列表",
+          "val": "",
+          "type": "textarea",
+          "placeholder": "https://app-1.cfapps.ap21.hana.ondemand.com\nhttps://app-2.cfapps.us10-001.hana.ondemand.com"
+        }
+      ]
+    }
+  ]
+}
