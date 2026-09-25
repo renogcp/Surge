@@ -1,13 +1,14 @@
 #!name=TikTok 解锁检测 Panel
-#!desc=TikTok 解锁检测，支持在模块 UI 菜单中选择检测节点/策略
+#!desc=支持自动识别并选取系统策略/节点进行检测
 #!category=检测工具
 #!system=ios
-#!arguments=node:DIRECT
-#!arguments-desc=node:\n选择用于检测 TikTok 解锁状态的策略组或单个节点（如 DIRECT, Proxy, TikTok 或节点名称）
+
+[Argument]
+# tag 是显示的标题，policy 类型会让 Surge 自动加载当前所有的策略与节点列表
+node = policy, "DIRECT", tag=选择检测节点/策略, desc=自动识别系统中的所有策略组与节点
 
 [Script]
-# 使用 {{{node}}} 动态绑定 UI 界面中选择的节点/策略
-TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,argument=policy={{{node}}}
+TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,argument=policy={node}
 
 [Panel]
 TikTok-Check = script-name=TikTok-Check,update-interval=3600
