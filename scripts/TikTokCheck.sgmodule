@@ -12,3 +12,4 @@ TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogc
 
 [Panel]
 TikTok-Check = script-name=TikTok-Check,update-interval=3600
+
