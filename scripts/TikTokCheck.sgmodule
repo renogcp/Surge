@@ -2,10 +2,10 @@
 #!desc=TikTok 解锁检测，支持在模块 UI 菜单中选择检测节点/策略
 #!category=检测工具
 #!system=ios
-#!arguments=node:policy,"DIRECT",tag=检测节点/策略,desc=自动识别系统中的所有策略与节点，同时支持键盘手动输入修改
+#!arguments=node:TikTok
+#!arguments-desc=node:\n选择用于检测 TikTok 解锁状态的策略组或单个节点
 
 [Script]
-# 使用 {{{node}}} 动态绑定 UI 界面中选择或手动输入的节点/策略
 TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,argument=policy={{{node}}}
 
 [Panel]
