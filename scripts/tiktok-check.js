@@ -23,14 +23,13 @@ function getFlagEmoji(countryCode) {
 
 $httpClient.get(tiktokReq, function (error, response, data) {
   const displayTitle = 'TikTok 解锁检测';
-  const tiktokIcon = 'tiktok';
+  const tiktokIcon = 'https://gitlab.com/myouhi/Surge/-/raw/main/icon/qure/color/TikTok_Alt.png';
 
   if (error) {
     $done({
       title: displayTitle,
       content: '连接超时 / 节点不可用',
-      icon: tiktokIcon,
-      'icon-color': '#F44336'
+      icon: tiktokIcon
     });
     return;
   }
@@ -49,8 +48,7 @@ $httpClient.get(tiktokReq, function (error, response, data) {
       $done({
         title: displayTitle,
         content: `已解锁 (${getFlagEmoji(region)} ${region})`,
-        icon: tiktokIcon,
-        'icon-color': '#000000'
+        icon: tiktokIcon
       });
     } else {
       const ipReq = {
@@ -62,8 +60,7 @@ $httpClient.get(tiktokReq, function (error, response, data) {
       $httpClient.get(ipReq, function (ipErr, ipRes, ipData) {         if (!ipErr && ipData) {           try {             const ipInfo = JSON.parse(ipData);             if (ipInfo && ipInfo.country_code) {               const ipRegion = ipInfo.country_code.toUpperCase();$done({
                 title: displayTitle,
                 content: `已解锁 (${getFlagEmoji(ipRegion)} ${ipRegion})`,
-                icon: tiktokIcon,
-                'icon-color': '#000000'
+                icon: tiktokIcon
               });
               return;
             }
@@ -73,8 +70,7 @@ $httpClient.get(tiktokReq, function (error, response, data) {
         $done({
           title: displayTitle,
           content: '已解锁 (未知地区)',
-          icon: tiktokIcon,
-          'icon-color': '#000000'
+          icon: tiktokIcon
         });
       });
     }
@@ -82,8 +78,7 @@ $httpClient.get(tiktokReq, function (error, response, data) {
     $done({
       title: displayTitle,
       content: `未解锁 (HTTP ${status})`,
-      icon: tiktokIcon,
-      'icon-color': '#FF9500'
+      icon: tiktokIcon
     });
   }
 });
