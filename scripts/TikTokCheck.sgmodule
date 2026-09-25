@@ -1,10 +1,11 @@
-#!name=TikTok 解锁检测 Panel
-#!desc=使用指定的 tiktok-check.js 检测当前节点的 TikTok 解锁状态与服务地区
+#!name=TikTok 自定义策略检测 Panel
+#!desc=支持自定义策略/节点检测 TikTok 解锁状态
 #!category=检测工具
 #!system=ios
 
 [Script]
-TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10
+# 示例：通过 argument=policy=TikTok 指定名为 "TikTok" 的策略组进行检测
+TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,argument=policy=TikTok
 
 [Panel]
 TikTok-Check = script-name=TikTok-Check,update-interval=3600
