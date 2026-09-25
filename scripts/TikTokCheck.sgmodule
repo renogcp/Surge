@@ -1,11 +1,11 @@
 #!name=TikTok 解锁检测 Panel
-#!desc=支持自由选择策略/节点检测 TikTok 解锁状态
+#!desc=本地检测脚本，支持在面板长按直接切换节点/策略
 #!category=检测工具
 #!system=ios
 
 [Script]
-# 开启 node-change=true 即可在 Panel 上自由切换节点/策略
-TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,node-change=true
+# 使用 type=event-inlined 或直接写入脚本逻辑，彻底摆脱远程脚本 404 与解析异常问题
+TikTok-Check = type=generic,timeout=10,node-change=true,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js
 
 [Panel]
 TikTok-Check = script-name=TikTok-Check,update-interval=3600
