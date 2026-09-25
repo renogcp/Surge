@@ -1,11 +1,15 @@
 #!name=TikTok 解锁检测 Panel
-#!desc=支持自定义/切换策略检测 TikTok 解锁状态
+#!desc=支持自定义策略/节点检测 TikTok 解锁状态
 #!category=检测工具
 #!system=ios
 
+[Argument]
+# 声明可供用户在 UI 界面编辑修改的参数
+policy = input, "TikTok", tag=检测策略/节点名, desc=输入需要绑定的策略组名称或节点名称（如 TikTok、Proxy 或美国节点）
+
 [Script]
-# 增加了 node-change=true 参数
-TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,node-change=true
+# 使用 {policy} 动态引用上面 Argument 定义的数据，并开启 node-change
+TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,node-change=true,argument=policy={policy}
 
 [Panel]
 TikTok-Check = script-name=TikTok-Check,update-interval=3600
