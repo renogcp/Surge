@@ -1,9 +1,5 @@
-/**
- * TikTok 节点/策略精准识别检测脚本（纯净标题 + TikTok 图标版）
- */
 const policy = $argument ? ($argument.match(/policy=([^&]+)/) || [])[1] : null;
 
-// 优先使用 TikTok 内部 API 探测
 const tiktokReq = {
   url: 'https://www.tiktok.com/api/v1/item/detail/?itemId=1',
   headers: {
@@ -16,7 +12,6 @@ if (policy) {
   tiktokReq['policy'] = decodeURIComponent(policy);
 }
 
-// 国旗 Emoji 转换工具函数
 function getFlagEmoji(countryCode) {
   if (!countryCode || countryCode.length !== 2) return '';
   const codePoints = countryCode
@@ -27,9 +22,7 @@ function getFlagEmoji(countryCode) {
 }
 
 $httpClient.get(tiktokReq, function (error, response, data) {
-  // 固定标题，隐藏后面的策略名称
   const displayTitle = 'TikTok 解锁检测';
-  // 使用 TikTok 官方图标 (如果 Surge 版本支持 SFSymbols 也可以替换为 sparkles.tv)
   const tiktokIcon = 'tiktok';
 
   if (error) {
@@ -49,7 +42,6 @@ $httpClient.get(tiktokReq, function (error, response, data) {
       Object.keys(response.headers).forEach(k => headers[k.toLowerCase()] = response.headers[k]);
     }
 
-    // 从 Header 抓取地区信息
     let region = headers['x-ip-country'] || headers['x-country-code'] || headers['cf-ipcountry'] || '';
 
     if (region && region.length === 2) {
@@ -61,7 +53,6 @@ $httpClient.get(tiktokReq, function (error, response, data) {
         'icon-color': '#000000'
       });
     } else {
-      // 备用机制：获取当前节点的 IP 地区
       const ipReq = {
         url: 'https://ipwho.is/',
         timeout: 5000
