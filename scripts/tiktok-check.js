@@ -1,5 +1,5 @@
 /**
- * TikTok 节点/策略精准识别检测脚本
+ * TikTok 节点/策略精准识别检测脚本（纯净标题 + TikTok 图标版）
  */
 const policy = $argument ? ($argument.match(/policy=([^&]+)/) || [])[1] : null;
 
@@ -27,14 +27,16 @@ function getFlagEmoji(countryCode) {
 }
 
 $httpClient.get(tiktokReq, function (error, response, data) {
-  // 动态拼装标题：如果有 policy 就显示 TikTok 解锁检测 (策略/节点名)
-  const displayTitle = `TikTok 解锁检测${policy ? ` (${decodeURIComponent(policy)})` : ''}`;
+  // 固定标题，隐藏后面的策略名称
+  const displayTitle = 'TikTok 解锁检测';
+  // 使用 TikTok 官方图标 (如果 Surge 版本支持 SFSymbols 也可以替换为 sparkles.tv)
+  const tiktokIcon = 'tiktok';
 
   if (error) {
     $done({
       title: displayTitle,
       content: '连接超时 / 节点不可用',
-      icon: 'waveform.path.badge.minus',
+      icon: tiktokIcon,
       'icon-color': '#F44336'
     });
     return;
@@ -55,8 +57,8 @@ $httpClient.get(tiktokReq, function (error, response, data) {
       $done({
         title: displayTitle,
         content: `已解锁 (${getFlagEmoji(region)} ${region})`,
-        icon: 'sparkles.tv',
-        'icon-color': '#34C759'
+        icon: tiktokIcon,
+        'icon-color': '#000000'
       });
     } else {
       // 备用机制：获取当前节点的 IP 地区
@@ -69,8 +71,8 @@ $httpClient.get(tiktokReq, function (error, response, data) {
       $httpClient.get(ipReq, function (ipErr, ipRes, ipData) {         if (!ipErr && ipData) {           try {             const ipInfo = JSON.parse(ipData);             if (ipInfo && ipInfo.country_code) {               const ipRegion = ipInfo.country_code.toUpperCase();$done({
                 title: displayTitle,
                 content: `已解锁 (${getFlagEmoji(ipRegion)} ${ipRegion})`,
-                icon: 'sparkles.tv',
-                'icon-color': '#34C759'
+                icon: tiktokIcon,
+                'icon-color': '#000000'
               });
               return;
             }
@@ -80,8 +82,8 @@ $httpClient.get(tiktokReq, function (error, response, data) {
         $done({
           title: displayTitle,
           content: '已解锁 (未知地区)',
-          icon: 'sparkles.tv',
-          'icon-color': '#34C759'
+          icon: tiktokIcon,
+          'icon-color': '#000000'
         });
       });
     }
@@ -89,7 +91,7 @@ $httpClient.get(tiktokReq, function (error, response, data) {
     $done({
       title: displayTitle,
       content: `未解锁 (HTTP ${status})`,
-      icon: 'xmark.shield',
+      icon: tiktokIcon,
       'icon-color': '#FF9500'
     });
   }
