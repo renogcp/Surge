@@ -1,11 +1,15 @@
 #!name=TikTok 解锁检测 Panel
-#!desc=本地检测脚本，支持在面板长按直接切换节点/策略
+#!desc=支持在模块菜单中选择指定节点/策略组进行 TikTok 解锁检测
 #!category=检测工具
 #!system=ios
 
+[Argument]
+# 使用 policy 类型，Surge 会在模块参数设置界面自动渲染出策略/节点选择器
+selected_policy = policy, "TikTok", tag=检测节点/策略, desc=请选择用于检测 TikTok 解锁状态的策略或节点
+
 [Script]
-# 使用 type=event-inlined 或直接写入脚本逻辑，彻底摆脱远程脚本 404 与解析异常问题
-TikTok-Check = type=generic,timeout=10,node-change=true,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js
+# 将用户选择的策略作为 argument 参数传给 JS 脚本
+TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10,argument=policy={selected_policy}
 
 [Panel]
 TikTok-Check = script-name=TikTok-Check,update-interval=3600
