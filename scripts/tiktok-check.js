@@ -1,34 +1,59 @@
 /**
- * Surge Panel: TikTok Unlock Check
+ * Surge Panel: TikTok Unlock Check (Support Custom Policy)
  */
 
+// 获取传入的自定义策略名称 (例如 argument=policy=TikTok)
+let policy = null;
+if (typeof $argument !== 'undefined' && $argument) {   const args = {};$argument.split('&').forEach((item) => {
+    const [key, val] = item.split('=');
+    if (key && val) args[key] = decodeURIComponent(val);
+  });
+  if (args.policy) {
+    policy = args.policy;
+  }
+}
+
 const url = 'https://www.tiktok.com/';
-const headers = {
-  'User-Agent':
-    'Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1',
+const requestConfig = {
+  url: url,
+  headers: {
+    'User-Agent':
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+  },
+  timeout: 8000,
 };
 
-$httpClient.get({ url: url, headers: headers }, function (error, response, data) {
+// 如果指定了策略名称，则将节点绑定到该策略
+if (policy) {
+  requestConfig.node = policy;
+}
+
+$httpClient.get(requestConfig, function (error, response, data) {
+  const titleText = policy ? `TikTok 解锁 (${policy})` : 'TikTok 解锁状态';
+
   if (error) {
     $done({
-      title: 'TikTok 检测',
-      content: '网络连接失败',
+      title: titleText,
+      content: '网络连接超时 / 请求失败',
       icon: 'waveform.path.badge.minus',
       'icon-color': '#F44336',
     });
     return;
   }
 
-  if (response.status === 200) {
-    // 尝试获取响应头中的服务地区
-    let region = '';
-    if (response.headers['x-ip-country']) {
-      region = response.headers['x-ip-country'].toUpperCase();
-    } else if (response.headers['X-IP-Country']) {
-      region = response.headers['X-IP-Country'].toUpperCase();
-    }
+  const resHeaders = {};
+  if (response && response.headers) {
+    Object.keys(response.headers).forEach((key) => {
+      resHeaders[key.toLowerCase()] = response.headers[key];
+    });
+  }
 
-    // 格式化国旗 Emoji
+  const status = response.status;
+
+  if (status === 200 || status === 301 || status === 302) {
+    let region = resHeaders['x-ip-country'] || resHeaders['x-country-code'] || '';
+    region = region.toUpperCase();
+
     let flag = '';
     if (region && region.length === 2) {
       flag = String.fromCodePoint(
@@ -37,22 +62,22 @@ $httpClient.get({ url: url, headers: headers }, function (error, response, data)
     }
 
     $done({
-      title: 'TikTok 解锁状态',
+      title: titleText,
       content: region ? `已解锁 (${flag} ${region})` : '已解锁 (未知地区)',
       icon: 'sparkles.tv',
       'icon-color': '#34C759',
     });
-  } else if (response.status === 403) {
+  } else if (status === 403 || status === 451) {
     $done({
-      title: 'TikTok 解锁状态',
-      content: '未解锁 (403 Forbidden / IP 被拒)',
+      title: titleText,
+      content: `未解锁 (${status} IP 被拒)`,
       icon: 'xmark.shield',
       'icon-color': '#FF9500',
     });
   } else {
     $done({
-      title: 'TikTok 解锁状态',
-      content: `检测异常 (HTTP ${response.status})`,
+      title: titleText,
+      content: `检测异常 (HTTP ${status})`,
       icon: 'exclamationmark.triangle',
       'icon-color': '#FF9500',
     });
