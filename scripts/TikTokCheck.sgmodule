@@ -1,0 +1,10 @@
+#!name=TikTok 解锁检测 Panel
+#!desc=使用指定的 tiktok-check.js 检测当前节点的 TikTok 解锁状态与服务地区
+#!category=检测工具
+#!system=ios
+
+[Script]
+TikTok-Check = type=generic,script-path=https://raw.githubusercontent.com/renogcp/Surge/refs/heads/master/scripts/tiktok-check.js,timeout=10
+
+[Panel]
+TikTok-Check = script-name=TikTok-Check,update-interval=3600
